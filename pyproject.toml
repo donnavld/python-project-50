@@ -7,7 +7,9 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+  "PyYAML>=5.4"
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -22,4 +24,4 @@ dev = [
 ]
 
 [project.scripts]
-gendiff = "modules.script.main:main"
+gendiff = "modules.main:main"

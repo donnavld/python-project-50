@@ -1,4 +1,4 @@
-from modules.script.main import main
+from modules.main import main
 
 def fake_get_repos(self):
         return [
