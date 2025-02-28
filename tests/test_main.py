@@ -1,26 +1,90 @@
 from modules.main import main
+from io import StringIO
+import sys
+import pytest
+import json
+import yaml
+from modules.script.compare_files import generate_diff
+from modules.script.load_file import load_file
+from modules.script.stylish import stylish
 
-def fake_get_repos(self):
-        return [
-            type('Repo', (), {'name': 'repo1', 'fork': True})(),
-            type('Repo', (), {'name': 'repo2', 'fork': False})(),
-            type('Repo', (), {'name': 'repo3', 'fork': True})()
-        ]
+def test_load_file(tmp_path):
+    d = tmp_path / "sub"
+    d.mkdir()
+    p = d / "test.json"
+    data = {"name": "Alice", "age": 25, "address": {"city": "NY", "street": "1-st street"}}
+    p.write_text(json.dumps(data))
+    expected = {"name": "Alice", "age": 25, "address":{"city":"NY", "street":"1-st street"}}
+    assert load_file(__file__, "test.json") == expected
 
-def test_main(capsys):
+def test_load_file_invalid_format(tmp_path):
+    d = tmp_path / "sub"
+    d.mkdir()
+    p = d / "test.txt"  # Неподдерживаемый формат .txt
+    p.write_text("Some text content")
+
+    with pytest.raises(ValueError, match="Unsupported file format: txt"):
+        load_file(__file__, str(p))
+
+def test_generate_diff():
+    data1 = {"name": "Alice", "age": 25, "address":{"city":"NY", "street":"1-st street"}}
+    data2 = {"name": "Alice", "age": 30, "email": "alice@example.com"}
+
+    expected = {
+        "name": "Alice",
+        "age": {"-": 25, "+": 30},
+        "address": {"-": {"city": "NY", "street": "1-st street"}},
+        "email": {"+": "alice@example.com"}
+    }
+
+    assert generate_diff(data1, data2) == expected
+
+
+def test_stylish():
+    data = {
+        "name": "Alice",
+        "age": {"-": 25, "+": 30},
+        "address": {"-": {"city": "NY", "street": "1-st street"}},
+        "email": {"+": "alice@example.com"}
+    }
+    expected = """{
+  name: Alice
+  - age: 25
+  + age: 30
+  - address: {
+      city: NY
+      street: 1-st street
+    }
+  + email: alice@example.com
+}"""
+    assert stylish(data) == expected
+
+def test_main_invalid_format(monkeypatch):
+    test_args = ["hexlet-code", "tests/fixtures/file1.txt", "tests/fixtures/file2.txt"]
+    monkeypatch.setattr(sys, "argv", test_args)
+
+    with pytest.raises(ValueError, match="Unsupported file format: txt"):
+        main()
+
+def test_main(monkeypatch):
+    test_args = ["python-project-50/modules", "tests/fixtures/file1.json", "tests/fixtures/file2.json"]
+    monkeypatch.setattr(sys, "argv", test_args)
+    captured_output = StringIO()
+    monkeypatch.setattr(sys, "stdout", captured_output)
     main()
-    # Захватываем вывод
-    captured = capsys.readouterr().out.strip()    
-    expected = (
-        "host: hexlet.io\n"
-        "- timeout: 50\n"
-        "+ timeout: 20\n"
-        "- follow: False\n"
-        "- proxy: 123.234.53.22\n"
-        "+ verbose: True"
-    )
+    output = captured_output.getvalue().strip()  # Получаем вывод и убираем лишние переносы строк
+    expected = """{
+  name: Alice
+  - age: 25
+  + age: 30
+  - address: {
+      city: NY
+      street: 1-st street
+    }
+  + email: alice@example.com
+}"""
     
-    assert captured == expected
+    assert output == expected, f"Expected:\n{expected}\nGot:\n{output}"
 
 # подмена даннных
 #def test_main_with_monkeypatch(monkeypatch, capsys):

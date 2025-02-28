@@ -1,9 +1,8 @@
 import json
 import os    
 
-def get_json_file(path_main, file):
+def get_json_file(base_dir, file):
 
-    base_dir = os.path.join(os.path.dirname(path_main), "", "files")
 #    print (path_main)
     file_path = os.path.join(base_dir, file)
     dic_file = json.load(open(file_path))

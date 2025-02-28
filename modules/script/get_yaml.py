@@ -1,9 +1,8 @@
 import yaml
 import os   
 
-def get_yaml_file(path_main, file):
+def get_yaml_file(base_dir, file):
 
-    base_dir = os.path.join(os.path.dirname(path_main), "", "files")
 #    print (path_main)
     file_path = os.path.join(base_dir, file)
 #    print (file_path)
