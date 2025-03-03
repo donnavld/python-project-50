@@ -6,7 +6,7 @@ import json
 import yaml
 from modules.script.compare_files import generate_diff
 from modules.script.load_file import load_file
-from modules.script.stylish import stylish
+from modules.script.get_print import stylish, plain
 
 def test_load_file(tmp_path):
     d = tmp_path / "sub"
@@ -58,6 +58,24 @@ def test_stylish():
   + email: alice@example.com
 }"""
     assert stylish(data) == expected
+
+
+def test_plain():
+    data = {
+        "name": "Alice",
+        "age": {"-": 25, "+": 30},
+        "address": {"-": {"city": "NY", "street": "1-st street"}},
+        "email": {"+": "alice@example.com"},
+        'setting5': {'+': {'key5': 'value5'}}
+    }
+    expected = """\
+Property 'age' was updated. From 25 to 30
+Property 'address' was removed
+Property 'email' was added with value: 'alice@example.com'
+Property 'setting5' was added with value: [complex value]
+"""
+    assert plain(data) == expected
+
 
 def test_main_invalid_format(monkeypatch):
     test_args = ["hexlet-code", "tests/fixtures/file1.txt", "tests/fixtures/file2.txt"]

@@ -1,6 +1,13 @@
-from .stylish import stylish
+from .get_print import stylish, plain 
 
-def diff_plain_dicts(d1, d2):
+def generate_diff(d1, d2, format_name='stylish'):
+    get_print = {"stylish": stylish, "plain": plain}
+    diff = generate_diff_get_result(d1,d2)
+    if format_name in get_print:
+        return get_print[format_name](diff)
+    raise ValueError(f"Unsupported file format: {format_name}")
+
+def diff_dict(d1, d2):
     result = []
     keys1 = set(d1.keys())
     keys2 = set(d2.keys())
@@ -56,7 +63,8 @@ def generate_diff_old(d1, d2, format_name='stylish'):
     return iner_dic(d1,d2)
 
 
-def generate_diff(d1, d2, format_name='stylish'):
+
+def generate_diff_get_result(d1, d2):
 
     def iner_dic(dic1, dic2):
         result = {}

@@ -6,10 +6,11 @@
 
 ## Установка
 pip install my_diff_tool
-## Использование 
+## Использование default format = stylish
 gendiff file_c1.json file_c2.json
+gendiff --format plain file_c1.yml file_c2.yml
 
-## Пример работы
+## Пример работы 
 ```yaml
 file1.yaml:
   name: Alice
@@ -27,6 +28,28 @@ $ generate_diff file1.yaml file2.yaml
     + age: 30
     + email: alice@example.com
 }
+
+```json
+file_c1.json:
+  name: Alice
+  age: 25
+
+file_c2.json:
+  "name": "Alice"
+  "age": 30
+  "email": "alice@example.com"
+  "setting5": {
+    "key5": "value5"
+  }
+bash
+$ gendiff --format plain file_c1.json file_c2.json
+{
+  Property 'age' was updated. From 25 to 30
+  Property 'address' was removed
+  Property 'email' was added with value: 'alice@example.com'
+  Property 'setting5' was added with value: [complex value]
+}
+
 ### **Что сделано**
 ✅ **Читаем файлы JSON/YAML**  
 ✅ **Находим различия и строим внутреннюю структуру diff**  
