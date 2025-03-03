@@ -1,4 +1,5 @@
 import itertools
+import json
 
 
 def stylish(diff, replacer=' ', spaces_count=1):
@@ -61,4 +62,7 @@ def plain(diff):
         return '\n'.join(filter(None, lines))  # Убираем пустые строки
 
     return iter_(diff)
+
+def print_json(diff):
+    return json.dumps(diff, indent=2) 
 
