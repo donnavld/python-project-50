@@ -64,5 +64,21 @@ def plain(diff):
     return iter_(diff)
 
 def print_json(diff):
-    return json.dumps(diff, indent=2) 
+    def iter_(current_value):
+        if isinstance(current_value, dict):
+            formatted = {}
+            for key, val in sorted(current_value.items()):
+                if isinstance(val, dict) and set(val.keys()) == {"-", "+"}:
+                    formatted[key] = {"old_value": iter_(val["-"]), "new_value": iter_(val["+"])}
+                elif isinstance(val, dict) and "+" in val:
+                    formatted[key] = {"added": iter_(val["+"])}
+                elif isinstance(val, dict) and "-" in val:
+                    formatted[key] = {"removed": iter_(val["-"])}
+                else:
+                    formatted[key] = iter_(val)
+            return formatted
+        return current_value 
+
+    formatted_diff = iter_(diff)
+    return json.dumps(formatted_diff, indent=2)
 
