@@ -1,11 +1,11 @@
 import argparse
 from .script.get_file_extension import get_extension 
-from .script.compare_files import diff_dict, generate_diff
+from .script.compare_files import diff_dict, generate_diff_
 from .script.stylish import stylish
 from .script.load_file import load_file
 
 
-def main():
+def generate_diff():
 #    print("Hello from python-project-50!")
     parser = argparse.ArgumentParser(
                     prog='hexlet-code',
@@ -39,12 +39,12 @@ def main():
     dic_file1 = load_file(__file__, args.first_file)
     dic_file2 = load_file(__file__, args.second_file)
     
-    result = generate_diff(dic_file1, dic_file2, format_name=args.format)
+    result = generate_diff_(dic_file1, dic_file2, format_name=args.format)
     print(result)
 #    print(stylish(result))
 
 
 if __name__ == "__main__":
-    main()
+    generate_diff()
 
 

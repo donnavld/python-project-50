@@ -77,7 +77,7 @@ def print_json(diff):
                 else:
                     formatted[key] = iter_(val)
             return formatted
-        return current_value 
+        return current_value  # Если значение не словарь, возвращаем его как есть
 
     formatted_diff = iter_(diff)
     return json.dumps(formatted_diff, indent=2)

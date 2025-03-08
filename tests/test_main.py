@@ -82,14 +82,14 @@ def test_main_invalid_format(monkeypatch):
     monkeypatch.setattr(sys, "argv", test_args)
 
     with pytest.raises(ValueError, match="Unsupported file format: txt"):
-        main()
+        generate_diff()
 
 def test_main(monkeypatch):
     test_args = ["python-project-50/modules", "tests/fixtures/file1.json", "tests/fixtures/file2.json"]
     monkeypatch.setattr(sys, "argv", test_args)
     captured_output = StringIO()
     monkeypatch.setattr(sys, "stdout", captured_output)
-    main()
+    generate_diff()
     output = captured_output.getvalue().strip()  # Получаем вывод и убираем лишние переносы строк
     expected = """{
   name: Alice

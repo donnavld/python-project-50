@@ -1,6 +1,6 @@
 from .get_print import stylish, plain, print_json
 
-def generate_diff(d1, d2, format_name='stylish'):
+def generate_diff_(d1, d2, format_name='stylish'):
     get_print = {"stylish": stylish, "plain": plain, "json": print_json}
     diff = generate_diff_get_result(d1,d2)
     if format_name in get_print:
