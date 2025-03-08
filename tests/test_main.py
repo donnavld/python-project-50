@@ -1,12 +1,12 @@
-from modules.main import main
+from gendiff.main import main
 from io import StringIO
 import sys
 import pytest
 import json
 import yaml
-from modules.script.compare_files import generate_diff
-from modules.script.load_file import load_file
-from modules.script.get_print import stylish, plain
+from gendiff.script.compare_files import generate_diff
+from gendiff.script.load_file import load_file
+from gendiff.script.get_print import stylish, plain
 
 def test_load_file(tmp_path):
     d = tmp_path / "sub"
