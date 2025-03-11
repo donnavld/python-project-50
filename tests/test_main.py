@@ -1,10 +1,10 @@
-from gendiff.main import main
+from gendiff.main import main, generate_diff
 from io import StringIO
 import sys
 import pytest
 import json
 import yaml
-from gendiff.script.compare_files import generate_diff
+#from gendiff.script.compare_files import generate_diff
 from gendiff.script.load_file import load_file
 from gendiff.script.get_print import stylish, plain
 
@@ -89,7 +89,7 @@ def test_main(monkeypatch):
     monkeypatch.setattr(sys, "argv", test_args)
     captured_output = StringIO()
     monkeypatch.setattr(sys, "stdout", captured_output)
-    generate_diff()
+    main()
     output = captured_output.getvalue().strip()  # Получаем вывод и убираем лишние переносы строк
     expected = """{
   name: Alice

@@ -1,11 +1,11 @@
 from .get_print import stylish, plain, print_json
 
-def generate_diff_(d1, d2, format_name='stylish'):
-    get_print = {"stylish": stylish, "plain": plain, "json": print_json}
-    diff = generate_diff_get_result(d1,d2)
-    if format_name in get_print:
-        return get_print[format_name](diff)
-    raise ValueError(f"Unsupported file format: {format_name}")
+#def generate_diff_(d1, d2, format_name='stylish'):
+#    get_print = {"stylish": stylish, "plain": plain, "json": print_json}
+#    diff = generate_diff_get_result(d1,d2)
+#    if format_name in get_print:
+#        return get_print[format_name](diff)
+#    raise ValueError(f"Unsupported file format: {format_name}")
 
 def diff_dict(d1, d2):
     result = []
