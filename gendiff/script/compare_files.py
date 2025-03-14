@@ -68,6 +68,8 @@ def generate_diff_get_result(d1, d2):
 
     def iner_dic(dic1, dic2):
         result = {}
+#        print(type(dic1), dic1)
+#        print(type(dic2), dic2)
         keys1 = set(dic1.keys())
         keys2 = set(dic2.keys())
         for key in sorted(keys1 & keys2):

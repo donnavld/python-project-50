@@ -6,9 +6,13 @@ from .script.load_file import load_file
 
 from .script.get_print import stylish, plain, print_json
 
-def generate_diff(d1, d2, format_name='stylish'):
+def generate_diff(dic_file1, dic_file2, format_name='stylish'):
     get_print = {"stylish": stylish, "plain": plain, "json": print_json}
+    d1  = load_file(__file__, dic_file1)
+    d2  = load_file(__file__, dic_file2)
 #    print(d1)
+#    print(d2)
+#    print(type(d1))
     diff = generate_diff_get_result(d1,d2)
     if format_name in get_print:
         return get_print[format_name](diff)
@@ -67,10 +71,7 @@ def main():
 
     args = parser.parse_args()
 
-    dic_file1 = load_file(__file__, args.first_file)
-    dic_file2 = load_file(__file__, args.second_file)
-    
-    result = generate_diff(dic_file1, dic_file2, format_name=args.format)
+    result = generate_diff(args.first_file, args.second_file, format_name=args.format)
     print(result)
 #    print(stylish(result))
 
